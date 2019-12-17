@@ -72,6 +72,7 @@ exports.handlers = {
     for (const [i, example] of examples.entries()) {
       if (example.includes('region_tag')) {
         const [, tag, intro] = example.split(/\r?\n/)
+        if (!tag) continue
         const key = tag.replace('region_tag:', '').trim()
         const sample = sampleCache.get(key)
         if (!sample) {
