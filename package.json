@@ -6,10 +6,15 @@
   "scripts": {
     "test": "c8 mocha test/test.js",
     "lint": "gts check",
-    "fix": "gts fix"
+    "fix": "gts fix",
+    "docs": "echo 🙈",
+    "docs-test": "echo 🙈",
+    "samples-test": "echo 🙈",
+    "prelint": "echo 🙈"
+
   },
   "files": [
-    "index.js"
+    "src/index.js"
   ],
   "repository": "googleapis/jsdoc-region-tag",
   "keywords": [

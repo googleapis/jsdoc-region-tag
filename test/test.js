@@ -16,7 +16,7 @@
 
 process.env.SAMPLES_DIRECTORY = './test/fixtures';
 
-const {loadSampleCache} = require('../');
+const {loadSampleCache} = require('../src');
 const {describe, it} = require('mocha');
 const assert = require('assert');
 
