@@ -14,44 +14,47 @@
  * limitations under the License.
  */
 
-const glob = require('glob')
-const { readFileSync, statSync } = require('fs')
-const { resolve } = require('path')
+const glob = require('glob');
+const {readFileSync, statSync} = require('fs');
+const {resolve} = require('path');
 
-const SAMPLES_DIRECTORY = process.env.SAMPLES_DIRECTORY || resolve(process.cwd(), './samples')
-const REGION_START_REGEX = /\[START\s+([^\]]+)/
-const REGION_END_REGEX = /\[END/
+const SAMPLES_DIRECTORY =
+  process.env.SAMPLES_DIRECTORY || resolve(process.cwd(), './samples');
+const REGION_START_REGEX = /\[START\s+([^\]]+)/;
+const REGION_END_REGEX = /\[END/;
 
-const sampleCache = new Map()
+const sampleCache = new Map();
 exports.loadSampleCache = function () {
-  const sampleCandidates = glob.sync(`${SAMPLES_DIRECTORY}/**/*.{js,ts}`, { ignore: ['node_modules'] })
+  const sampleCandidates = glob.sync(`${SAMPLES_DIRECTORY}/**/*.{js,ts}`, {
+    ignore: ['node_modules'],
+  });
   for (const candidate of sampleCandidates) {
-    const stat = statSync(candidate)
-    if (!stat.isFile()) continue
-    const content = readFileSync(candidate, 'utf8')
+    const stat = statSync(candidate);
+    if (!stat.isFile()) continue;
+    const content = readFileSync(candidate, 'utf8');
     if (REGION_START_REGEX.test(content)) {
-      parseSamples(content)
+      parseSamples(content);
     }
   }
-  return sampleCache
-}
+  return sampleCache;
+};
 
-function parseSamples (content) {
-  let key
-  let sample
-  let inTag = false
+function parseSamples(content) {
+  let key;
+  let sample;
+  let inTag = false;
   for (const line of content.split(/\r?\n/)) {
     if (inTag && REGION_END_REGEX.test(line)) {
-      sampleCache.set(key, sample)
-      inTag = false
+      sampleCache.set(key, sample);
+      inTag = false;
     } else if (inTag) {
-      sample += `${line}\n`
+      sample += `${line}\n`;
     } else {
-      const match = line.match(REGION_START_REGEX)
+      const match = line.match(REGION_START_REGEX);
       if (match) {
-        key = match[1]
-        sample = ''
-        inTag = true
+        key = match[1];
+        sample = '';
+        inTag = true;
       }
     }
   }
@@ -60,26 +63,28 @@ function parseSamples (content) {
 exports.handlers = {
   newDoclet: e => {
     if (sampleCache.size === 0) {
-      exports.loadSampleCache()
+      exports.loadSampleCache();
     }
 
-    const examples = e.doclet.examples
+    const examples = e.doclet.examples;
 
     if (!examples) {
-      return
+      return;
     }
 
     for (const [i, example] of examples.entries()) {
       if (example.includes('region_tag')) {
-        const [, tag, intro] = example.split(/\r|\n/)
-        const key = tag.replace('region_tag:', '').trim()
-        const sample = sampleCache.get(key)
+        const [, tag, intro] = example.split(/\r|\n/);
+        const key = tag.replace('region_tag:', '').trim();
+        const sample = sampleCache.get(key);
         if (!sample) {
-          console.warn(`could not find sample ${key}`)
+          console.warn(`could not find sample ${key}`);
         } else {
-          examples[i] = intro ? `<caption>${intro}</caption>\n${sample}` : sample
+          examples[i] = intro
+            ? `<caption>${intro}</caption>\n${sample}`
+            : sample;
         }
       }
     }
-  }
-}
+  },
+};
