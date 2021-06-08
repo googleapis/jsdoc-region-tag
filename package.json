@@ -39,7 +39,7 @@
     "@microsoft/api-extractor": "^7.8.10",
     "c8": "^7.0.0",
     "gts": "^3.0.0",
-    "mocha": "^8.0.0",
+    "mocha": "^9.0.0",
     "typescript": "^3.9.7"
   }
 }
