@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/googleapis/jsdoc-region-tag#readme",
   "dependencies": {
-    "glob": "^7.1.6"
+    "glob": "^8.0.0"
   },
   "devDependencies": {
     "c8": "^7.0.0",
