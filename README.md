@@ -1,3 +1,4 @@
+# This repository has been migrated to googleapis/google-cloud-node-core.
 # Region Tag JSDoc Plugin
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
